@@ -7,7 +7,7 @@ import os
 
 def get_files():
     global prev_primary_col, new_primary_col, prev_file, new_file
-    os.chdir('d:/CostReports/Automatization')
+    os.chdir('../SarnovaReports')
     # pd.set_option('display.max_columns', None)
 
     reportes = sorted(os.listdir())
@@ -119,10 +119,10 @@ def final_validation():
 
 def change_file_name(finalValidation: bool):
     if finalValidation:
-        os.rename(new_file, f'Sarnova {new_carrier_name.upper()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
+        os.rename(new_file, f'Sarnova {new_carrier_name.capitalize()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
     else:
         os.rename(new_file, f'REVIEW - {new_carrier_name.upper()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
-
+2
 
 def main():
     get_files()
@@ -134,8 +134,6 @@ def main():
     check_dupes()
     check_glcode()
     change_file_name(final_validation())
-
-
 
 if __name__ == "__main__":
     main()

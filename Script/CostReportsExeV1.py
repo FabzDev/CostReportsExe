@@ -7,7 +7,7 @@ import os
 
 def get_files():
     global prev_primary_col, new_primary_col, prev_file, new_file
-    os.chdir('../SarnovaReports')
+    os.chdir('../Reports')
     reportes = sorted(os.listdir())
     if len(os.path.basename(reportes[0])) > len(os.path.basename(reportes[1])):
         prev_file = reportes[0]

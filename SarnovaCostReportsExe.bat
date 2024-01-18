@@ -1,2 +1,2 @@
 cd Script
-python CostReportsExeV1.py
+python SarnovaCostReportsV1.py
