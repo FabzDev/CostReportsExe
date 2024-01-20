@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import os
 
+pd.set_option('display.max_columns', None)
 
 def get_files():
     global prev_primary_col, new_primary_col, prev_file, new_file
@@ -40,8 +41,9 @@ def get_amounts():
 
 def get_late_payment():
     global late_payment_amount
-    late_payment_col = pd.read_excel(new_file, sheet_name='Summary')
-    late_payment_amount =  late_payment_col[new_client_name][35]
+    late_payment_df = pd.read_excel(new_file, sheet_name='Summary')
+    late_payment_row =  late_payment_df.loc[late_payment_df['Unnamed: 1'] == 'Late Payment Fees'] # Reference to see the label "Late Payment Fees" 
+    late_payment_amount = late_payment_row.iloc[0, 4] # Version 1.1: Improved 'Late Payment Fee' cell filtering for accurate value retrieval, irrespective of the row number.
 
 
 def get_dates():

@@ -8,7 +8,7 @@ import os
 def get_files():
     global prev_primary_col, new_primary_col, prev_file, new_file
     os.chdir('../SarnovaReports')
-    # pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_columns', None)
 
     reportes = sorted(os.listdir())
     if len(os.path.basename(reportes[0])) > len(os.path.basename(reportes[1])):
@@ -34,7 +34,7 @@ def get_clients():
 
 def client_name_formatted(client_name):
     dict_name = {
-        'DIGITECH' : 'All OTHER DIVISIONS',
+        'DIGITECH' : 'ALL OTHER DIVISIONS',
         'BOUNDTREE MEDICAL' : 'Boundtree',
         'CARDIO PARTNERS' : 'Cardio',
         'EMERGENCY MEDICAL PRODUCTS' :'EMP',
@@ -52,8 +52,9 @@ def get_amounts():
 
 def get_late_payment():
     global late_payment_amount
-    late_payment_amount = pd.read_excel(new_file, sheet_name='Summary').iloc[35, 4]
-    # late_payment_amount = pd.read_excel(new_file, sheet_name='Summary').iloc[:, 4][35]
+    late_payment_df = pd.read_excel(new_file, sheet_name='Summary')
+    late_payment_row =  late_payment_df.loc[late_payment_df['Unnamed: 1'] == 'Late Payment Fees'] # Reference to see the label "Late Payment Fees" 
+    late_payment_amount = late_payment_row.iloc[0, 4] # Version 1.1: Improved 'Late Payment Fee' cell filtering for accurate value retrieval, irrespective of the row number.
 
 
 def get_dates():
@@ -119,10 +120,10 @@ def final_validation():
 
 def change_file_name(finalValidation: bool):
     if finalValidation:
-        os.rename(new_file, f'Sarnova {new_carrier_name.capitalize()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
+        os.rename(new_file, f'Sarnova {new_carrier_name.upper()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
     else:
-        os.rename(new_file, f'REVIEW - {new_carrier_name.upper()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
-2
+        os.rename(new_file, f'REVIEW - Sarnova {new_carrier_name.upper()} Parcel Cost Report {new_client_name} WE{date_formatted}.xlsx')
+
 
 def main():
     get_files()
@@ -135,13 +136,14 @@ def main():
     check_glcode()
     change_file_name(final_validation())
 
+
 if __name__ == "__main__":
     main()
     
     if final_validation():
         input('\t🎉TASK COMPLETED SUCCESSFULLY!!')
     else:
-        input('\t❌WARNING: THE PROCESS ENCOUNTERED AN ERROR. PLEASE CHECK VALIDATIONS!! ')
+        input('\t❌WARNING: THE PROCESS ENCOUNTERED AN ERROR. PLEASE CHECK VALIDATIONS!! \n')
     
     input (f'''
            Client matches: {client_matches}
