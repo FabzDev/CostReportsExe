@@ -1,0 +1,2 @@
+cd Script
+python ParcelCostReportExe.py
